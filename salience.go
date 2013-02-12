@@ -9,7 +9,6 @@
 package salience
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -85,8 +84,6 @@ func entropy(img image.Image, r image.Rectangle) float64 {
 			e -= freq[i] * math.Log2(freq[i])
 		}
 	}
-
-	fmt.Printf("Entropy of (%d, %d) (%d, %d) is %0.2f\n", r.Min.X, r.Min.Y, r.Max.X, r.Max.Y, e)
 
 	return e
 
