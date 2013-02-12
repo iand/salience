@@ -1,7 +1,7 @@
 salience
 ========
 
-Go package to detect interesting portions of images.
+Go package to detect interesting portions of images (salient region detection).
 
 One method "Crop" is provided which crops the supplied image to the width and height provided, ensuring the most interesting portion of the image is contained within the cropped area.
 
