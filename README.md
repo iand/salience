@@ -8,3 +8,7 @@ One method "Crop" is provided which crops the supplied image to the width and he
 Crop works by moving a sliding window over the input image and selecting the one with the highest entropy.
 
 Inspired by some of the ideas submitted here: http://codebrawl.com/contests/content-aware-image-cropping-with-chunkypng
+
+Run the sample command line app like this:
+
+go run /path/to/bin/cropper.go  /path/to/input.img /path/to/output.img 200

@@ -5,8 +5,6 @@
   This work is published from the United Kingdom.
 */
 
-// Inspired by https://gist.github.com/zaeleus/a54cd41137b678935c91
-
 // Crops an image to its most interesting area
 package salience
 
@@ -58,42 +56,6 @@ func crop(img image.Image, r image.Rectangle) image.Image {
 		}
 	}
 	return cropped
-}
-
-func greyscale(img image.Image) *image.Gray {
-	grey := image.NewGray(img.Bounds())
-
-	if rgba, ok := img.(*image.RGBA); ok {
-		// Optimised path
-		for p := 0; p < len(grey.Pix); p++ {
-			i := p * 4
-			r := uint32(rgba.Pix[i])
-			g := uint32(rgba.Pix[i+1])
-			b := uint32(rgba.Pix[i+2])
-			grey.Pix[p] = uint8((r*299 + g*587 + b*114) / 1000)
-
-		}
-	} else {
-		// Generic path
-		for p := 0; p < len(grey.Pix); p++ {
-			r, g, b, _ := img.At(p%grey.Stride, p/grey.Stride).RGBA()
-			grey.Pix[p] = uint8((r*299 + g*587 + b*114) / 1000)
-		}
-	}
-	return grey
-}
-
-func histogram(img image.Image) map[uint8]int {
-	h := make(map[uint8]int, 0)
-	r := img.Bounds()
-	for x := r.Min.X; x < r.Max.X; x++ {
-		for y := r.Min.Y; y < r.Max.Y; y++ {
-			r, g, b, _ := img.At(x, y).RGBA()
-			greyval := uint8((r*299 + g*587 + b*114) / 1000)
-			h[greyval] += 1
-		}
-	}
-	return h
 }
 
 // Calculate the entropy of a portion of an image
