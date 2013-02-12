@@ -12,3 +12,20 @@ Inspired by some of the ideas submitted here: http://codebrawl.com/contests/cont
 Run the sample command line app like this:
 
 go run /path/to/bin/cropper.go  /path/to/input.img /path/to/output.img 200
+
+INSTALLATION
+============
+
+Simply run
+
+	go get github.com/iand/salience
+
+Documentation is at [http://go.pkgdoc.org/github.com/iand/salience](http://go.pkgdoc.org/github.com/iand/salience)
+
+LICENSE
+=======
+This code and associated documentation is in the public domain.
+
+To the extent possible under law, Ian Davis has waived all copyright
+and related or neighboring rights to this file. This work is published 
+from the United Kingdom. 
