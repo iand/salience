@@ -19,17 +19,24 @@ import (
 
 // A simple command line program for finding the most interesting section of an image
 func main() {
-	if len(os.Args) < 4 {
-		println("Please supply input image filename, output filename and output image width as arguments")
+	if len(os.Args) < 5 {
+		println("Please supply input image filename, output filename and output image width and height as arguments")
 		os.Exit(1)
 	}
 	finName := os.Args[1]
 	foutName := os.Args[2]
 	widthStr := os.Args[3]
+	heightStr := os.Args[4]
 
 	width, err := strconv.ParseInt(widthStr, 10, 0)
 	if err != nil {
 		fmt.Printf("Error parsing image width argument: %s\n", err.Error())
+		os.Exit(1)
+	}
+
+	height, err := strconv.ParseInt(heightStr, 10, 0)
+	if err != nil {
+		fmt.Printf("Error parsing image height argument: %s\n", err.Error())
 		os.Exit(1)
 	}
 
@@ -51,7 +58,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	imgOut := salience.Crop(img, int(width), int(width))
+	imgOut := salience.Crop(img, int(width), int(height))
 
 	if err = png.Encode(fout, imgOut); err != nil {
 		fmt.Printf("Error encoding output image: %s\n", err.Error())
