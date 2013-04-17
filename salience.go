@@ -25,6 +25,14 @@ func Crop(img image.Image, cropWidth, cropHeight int) image.Image {
 	imageWidth := r.Max.X - r.Min.X
 	imageHeight := r.Max.Y - r.Min.Y
 
+	if cropWidth > imageWidth {
+		cropWidth = imageWidth
+	}
+
+	if cropHeight > imageHeight {
+		cropHeight = imageHeight
+	}
+
 	x, y := 0, 0
 	sliceStep := imageWidth / 8
 	if imageHeight/8 < sliceStep {
