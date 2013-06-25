@@ -14,7 +14,7 @@ Run the sample command line app like this:
 
 go run /path/to/bin/cropper.go  /path/to/input.img /path/to/output.img 200 120
 
-# Installation
+## Installation
 
 Simply run
 
@@ -35,7 +35,7 @@ Documentation is at [http://godoc.org/github.com/iand/salience](http://godoc.org
 * Do submit your changes as a pull request
 * Do your best to adhere to the existing coding conventions and idioms.
 * Do run `go fmt` on the code before committing 
-* Do feel free to add yourself to the `CREDITS` file and the
+* Do feel free to add yourself to the `[CREDITS](CREDITS)` file and the
   corresponding list in the the `README.md`. Alphabetical order applies.
 * Don't touch the `AUTHORS` file. If your contributions are significant
   enough, be assured we will eventually add you in there.
