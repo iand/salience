@@ -1,7 +1,8 @@
-salience
-========
+# salience
 
 Go package to detect interesting portions of images (salient region detection).
+
+## Usage
 
 One method "Crop" is provided which crops the supplied image to the width and height provided, ensuring the most interesting portion of the image is contained within the cropped area.
 
@@ -13,23 +14,37 @@ Run the sample command line app like this:
 
 go run /path/to/bin/cropper.go  /path/to/input.img /path/to/output.img 200 120
 
-INSTALLATION
-============
+# Installation
 
 Simply run
 
 	go get github.com/iand/salience
 
-Documentation is at [http://go.pkgdoc.org/github.com/iand/salience](http://go.pkgdoc.org/github.com/iand/salience)
+Documentation is at [http://godoc.org/github.com/iand/salience](http://godoc.org/github.com/iand/salience)
 
-LICENSE
-=======
-This code and associated documentation is in the public domain.
+## Authors
 
-To the extent possible under law, Ian Davis has waived all copyright
-and related or neighboring rights to this file. This work is published 
-from the United Kingdom. 
+* [Ian Davis](http://github.com/iand) - <http://iandavis.com/>
 
-TIP
-===
-If you like this code and want to show your appreciation, I accept bitcoin tips at 1NMjYDmQq9X2m8oSSieGh6J6tmJY11K47X
+
+## Credits
+
+
+## Contributing
+
+* Do submit your changes as a pull request
+* Do your best to adhere to the existing coding conventions and idioms.
+* Do run `go fmt` on the code before committing 
+* Do feel free to add yourself to the `CREDITS` file and the
+  corresponding list in the the `README.md`. Alphabetical order applies.
+* Don't touch the `AUTHORS` file. If your contributions are significant
+  enough, be assured we will eventually add you in there.
+* Do note that in order for us to merge any non-trivial changes (as a rule
+  of thumb, additions larger than about 15 lines of code), we need an
+  explicit [public domain dedication][PDD] on record from you. Please include
+  a the statement found in the `WAIVER` file with your pull request
+
+## License
+
+This is free and unencumbered public domain software. For more
+information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
