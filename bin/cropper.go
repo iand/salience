@@ -1,8 +1,6 @@
 /*
-  PUBLIC DOMAIN STATEMENT
-  To the extent possible under law, Ian Davis has waived all copyright
-  and related or neighboring rights to this Source Code file.
-  This work is published from the United Kingdom.
+This is free and unencumbered software released into the public domain. For more
+information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 */
 
 package main
