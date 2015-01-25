@@ -2,6 +2,8 @@
 
 Go package to detect interesting portions of images (salient region detection).
 
+[![Build Status](https://travis-ci.org/iand/salience.svg?branch=master)](https://travis-ci.org/iand/salience)
+
 ## Usage
 
 One method "Crop" is provided which crops the supplied image to the width and height provided, ensuring the most interesting portion of the image is contained within the cropped area.

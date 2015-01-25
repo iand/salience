@@ -9,6 +9,7 @@ package salience
 import (
 	"image"
 	"image/color"
+	"image/draw"
 	"math"
 )
 
@@ -49,17 +50,12 @@ func Crop(img image.Image, cropWidth, cropHeight int) image.Image {
 			}
 		}
 	}
-
 	return crop(img, image.Rect(bestSection.x, bestSection.y, bestSection.x+cropWidth, bestSection.y+cropHeight))
 }
 
 func crop(img image.Image, r image.Rectangle) image.Image {
-	cropped := image.NewRGBA(r)
-	for x := r.Min.X; x < r.Max.X; x++ {
-		for y := r.Min.Y; y < r.Max.Y; y++ {
-			cropped.Set(x, y, img.At(x, y))
-		}
-	}
+	cropped := image.NewRGBA(image.Rect(0, 0, r.Dx(), r.Dy()))
+	draw.Draw(cropped, cropped.Bounds(), img, r.Min, draw.Src)
 	return cropped
 }
 
