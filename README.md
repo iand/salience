@@ -38,7 +38,7 @@ Documentation is at [http://godoc.org/github.com/iand/salience](http://godoc.org
 * Do your best to adhere to the existing coding conventions and idioms.
 * Do run `go fmt` on the code before committing 
 * Do feel free to add yourself to the [`CREDITS`](CREDITS) file and the
-  corresponding Contributors list in the the [`README.md`](README.md). 
+  corresponding Contributors list in the [`README.md`](README.md). 
   Alphabetical order applies.
 * Don't touch the [`AUTHORS`](AUTHORS) file. An existing author will add you if 
   your contributions are significant enough.

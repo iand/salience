@@ -18,7 +18,7 @@ type Section struct {
 	e    float64
 }
 
-// Crops an image to its most interesting area with the specified extents
+// Crop crops an image to its most interesting area with the specified extents
 func Crop(img image.Image, cropWidth, cropHeight int) image.Image {
 	r := img.Bounds()
 	imageWidth := r.Max.X - r.Min.X
@@ -32,7 +32,7 @@ func Crop(img image.Image, cropWidth, cropHeight int) image.Image {
 		cropHeight = imageHeight
 	}
 
-	x, y := 0, 0
+	var x, y int
 	sliceStep := imageWidth / 8
 	if imageHeight/8 < sliceStep {
 		sliceStep = imageHeight / 8
@@ -69,7 +69,7 @@ func entropy(img image.Image, r image.Rectangle) float64 {
 		for y := r.Min.Y; y < r.Max.Y; y++ {
 			diff := greyvalue(img.At(x, y)) - greyvalue(img.At(x+1, y))
 			if -(arraySize+1)/2 < diff && diff < (arraySize+1)/2 {
-				freq[diff+(arraySize-1)/2] += 1
+				freq[diff+(arraySize-1)/2]++
 			}
 		}
 	}

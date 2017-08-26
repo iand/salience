@@ -6,13 +6,14 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 package main
 
 import (
-	salience ".."
 	"fmt"
 	"image"
 	_ "image/jpeg"
 	"image/png"
 	"os"
 	"strconv"
+
+	"github.com/iand/salience"
 )
 
 // A simple command line program for finding the most interesting section of an image
