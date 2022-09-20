@@ -1,0 +1,50 @@
+
+on:
+  workflow_dispatch:
+  pull_request:
+      types: [opened, reopened,ready_for_review,synchronize]
+  push:
+    branches:
+      - main
+      - master
+name: Test
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.17.x, 1.18.x, 1.19.x]
+        os: [ "ubuntu", "windows", "macos" ]
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - id: Cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/go/pkg/mod              # Module download cache
+          ~/.cache/go-build         # Build cache (Linux)
+          ~/Library/Caches/go-build # Build cache (Mac)
+          '%LocalAppData%\go-build' # Build cache (Windows)
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Dependencies
+      run: go mod download
+      if: steps.cache.outputs.cache-hit != 'true'
+    - name: Test
+      run: go test ./...
+    - name: Test 32 bit
+      if: ${{ matrix.os != 'macos' }} # can't run 32 bit tests on OSX.
+      env:
+        GOARCH: 386
+      run: go test ./...
+    - name: Test with race detector
+      if: ${{ matrix.os == 'ubuntu' }} # speed things up. Windows and OSX VMs are slow
+      run: go test -race ./...
