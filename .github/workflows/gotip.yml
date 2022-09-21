@@ -7,19 +7,20 @@ on:
     branches:
       - main
       - master
-name: Test
+name: Test Go Tip
 jobs:
   test:
-    strategy:
-      matrix:
-        go-version: [1.18.x, 1.19.x]
-        os: [ "ubuntu", "windows", "macos" ]
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ubuntu-latest
     steps:
     - name: Install Go
       uses: actions/setup-go@v2
       with:
-        go-version: ${{ matrix.go-version }}
+        go-version: 1.19.x
+    - name: Install Go tip
+      run: |
+        go install golang.org/dl/gotip@latest
+        gotip download
+        gotip version
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -30,21 +31,17 @@ jobs:
         path: |
           ~/go/pkg/mod              # Module download cache
           ~/.cache/go-build         # Build cache (Linux)
-          ~/Library/Caches/go-build # Build cache (Mac)
-          '%LocalAppData%\go-build' # Build cache (Windows)
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        key: ubuntu-go-${{ hashFiles('**/go.sum') }}
         restore-keys: |
-          ${{ runner.os }}-go-
+          ubuntu-go-
     - name: Dependencies
-      run: go mod download
+      run: gotip mod download
       if: steps.cache.outputs.cache-hit != 'true'
     - name: Test
-      run: go test ./...
+      run: gotip test ./...
     - name: Test 32 bit
-      if: ${{ matrix.os != 'macos' }} # can't run 32 bit tests on OSX.
       env:
         GOARCH: 386
-      run: go test ./...
+      run: gotip test ./...
     - name: Test with race detector
-      if: ${{ matrix.os == 'ubuntu' }} # speed things up. Windows and OSX VMs are slow
-      run: go test -race ./...
+      run: gotip test -race ./...
