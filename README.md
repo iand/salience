@@ -2,7 +2,9 @@
 
 Go package to detect interesting portions of images (salient region detection).
 
-[![Build Status](https://travis-ci.org/iand/salience.svg?branch=master)](https://travis-ci.org/iand/salience)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/github.com/iand/salience)
+[![Check Status](https://github.com/iand/salience/actions/workflows/check.yml/badge.svg)](https://github.com/iand/salience/actions/workflows/check.yml)
+[![Test Status](https://github.com/iand/salience/actions/workflows/test.yml/badge.svg)](https://github.com/iand/salience/actions/workflows/test.yml)
 
 ## Usage
 
@@ -22,7 +24,7 @@ Simply run
 
 	go get github.com/iand/salience
 
-Documentation is at [http://godoc.org/github.com/iand/salience](http://godoc.org/github.com/iand/salience)
+Documentation is at [https://pkg.go.dev/github.com/iand/salience](https://pkg.go.dev/github.com/iand/salience)
 
 ## Authors
 
