@@ -48,7 +48,8 @@ jobs:
             That should theoretically not be a problem if fixes are backported
             to all previous majors, but in practice they are often not, so it's
             worthwhile to occasionally look for new majors and integrate them.
-          branch: "dep-update"
+          branch: "autodep"
+          branch-suffix: "timestamp"
           commit-message: |
             Update package dependencies + tidy
 
