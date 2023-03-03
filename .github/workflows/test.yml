@@ -6,7 +6,7 @@ on:
     branches:
       - main
       - master
-name: Test
+name: Run tests
 jobs:
   test:
     strategy:
@@ -20,7 +20,7 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
       - id: Cache
