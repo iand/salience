@@ -11,39 +11,59 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.19.x, 1.20.x]
         os: ["ubuntu", "windows", "macos"]
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - name: Install Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go-version }}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
-      - id: Cache
-        uses: actions/cache@v3
+
+      - name: Install Go
+        uses: actions/setup-go@v4
         with:
-          path: |
-            ~/go/pkg/mod              # Module download cache
-            ~/.cache/go-build         # Build cache (Linux)
-            ~/Library/Caches/go-build # Build cache (Mac)
-            '%LocalAppData%\go-build' # Build cache (Windows)
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: Dependencies
-        run: go mod download
-        if: steps.cache.outputs.cache-hit != 'true'
+          go-version-file: 'go.mod'
+
+      - name: Get StaticCheck
+        if: ${{ matrix.os == 'ubuntu' }}
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Gomod
+        if: ${{ matrix.os == 'ubuntu' }}
+        run: |
+          go mod tidy
+          if [[ -n $(git ls-files --other --exclude-standard --directory -- go.sum) ]]; then
+            echo "go.sum was added by go mod tidy"
+            exit 1
+          fi
+          git diff --exit-code -- go.sum go.mod
+
+      - name: Gofmt
+        if: ${{ matrix.os == 'ubuntu' && (success() || failure()) }} # run this step even if the previous one failed
+        run: |
+          out=$(gofmt -s -l .)
+          if [[ -n "$out" ]]; then
+            echo $out | awk '{print "::error file=" $0 ",line=0,col=0::File is not gofmt-ed."}'
+            exit 1
+          fi
+
+      - name: Vet
+        if: ${{ matrix.os == 'ubuntu' && (success() || failure()) }} # run this step even if the previous one failed
+        run: go vet ./...
+
+      - name: StaticCheck
+        if: ${{ matrix.os == 'ubuntu' && (success() || failure()) }} # run this step even if the previous one failed
+        run: staticcheck ./...
+
       - name: Test
         run: go test ./...
+
       - name: Test 32 bit
         if: ${{ matrix.os != 'macos' }} # can't run 32 bit tests on OSX.
         env:
           GOARCH: 386
         run: go test ./...
+
       - name: Test with race detector
         if: ${{ matrix.os == 'ubuntu' }} # speed things up. Windows and OSX VMs are slow
         run: go test -race ./...
