@@ -8,6 +8,48 @@ on:
       - master
 name: Run tests
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Get StaticCheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Gomod
+        run: |
+          go mod tidy
+          if [[ -n $(git ls-files --other --exclude-standard --directory -- go.sum) ]]; then
+            echo "go.sum was added by go mod tidy"
+            exit 1
+          fi
+          git diff --exit-code -- go.sum go.mod
+
+      - name: Gofmt
+        if: ${{ success() || failure() }} # run this step even if the previous one failed
+        run: |
+          out=$(gofmt -s -l .)
+          if [[ -n "$out" ]]; then
+            echo $out | awk '{print "::error file=" $0 ",line=0,col=0::File is not gofmt-ed."}'
+            exit 1
+          fi
+
+      - name: Vet
+        if: ${{ success() || failure() }} # run this step even if the previous one failed
+        run: go vet ./...
+
+      - name: StaticCheck
+        if: ${{ success() || failure() }} # run this step even if the previous one failed
+        run: staticcheck ./...
+
   test:
     strategy:
       matrix:
@@ -23,37 +65,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
-
-      - name: Get StaticCheck
-        if: ${{ matrix.os == 'ubuntu' }}
-        run: go install honnef.co/go/tools/cmd/staticcheck@latest
-
-      - name: Gomod
-        if: ${{ matrix.os == 'ubuntu' }}
-        run: |
-          go mod tidy
-          if [[ -n $(git ls-files --other --exclude-standard --directory -- go.sum) ]]; then
-            echo "go.sum was added by go mod tidy"
-            exit 1
-          fi
-          git diff --exit-code -- go.sum go.mod
-
-      - name: Gofmt
-        if: ${{ matrix.os == 'ubuntu' && (success() || failure()) }} # run this step even if the previous one failed
-        run: |
-          out=$(gofmt -s -l .)
-          if [[ -n "$out" ]]; then
-            echo $out | awk '{print "::error file=" $0 ",line=0,col=0::File is not gofmt-ed."}'
-            exit 1
-          fi
-
-      - name: Vet
-        if: ${{ matrix.os == 'ubuntu' && (success() || failure()) }} # run this step even if the previous one failed
-        run: go vet ./...
-
-      - name: StaticCheck
-        if: ${{ matrix.os == 'ubuntu' && (success() || failure()) }} # run this step even if the previous one failed
-        run: staticcheck ./...
 
       - name: Test
         run: go test ./...
