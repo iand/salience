@@ -39,8 +39,8 @@ func Crop(img image.Image, cropWidth, cropHeight int) image.Image {
 	}
 	bestSection := Section{0, 0, 0.0}
 
-	for x = 0; x < imageWidth-cropWidth; x += sliceStep {
-		for y = 0; y < imageHeight-cropHeight; y += sliceStep {
+	for x = 0; x <= imageWidth-cropWidth; x += sliceStep {
+		for y = 0; y <= imageHeight-cropHeight; y += sliceStep {
 			e := entropy(img, image.Rect(x, y, x+cropWidth, y+cropHeight))
 
 			if e > bestSection.e {
